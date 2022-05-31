@@ -68,6 +68,28 @@ namespace ProductManager.Logic
             }
         }
 
+        public async Task<bool> Enqueue(string queueId, string userId)
+        {
+            try
+            {
+                var queue = await _queueLogic.Get(queueId);
+
+                var idList = queue.UserIds.ToList();
+                idList.Add(userId);
+
+                queue.UserIds = idList.Distinct().ToArray();
+
+                return await _queueLogic.Update(queue, queueId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error enqueueing user with id: {userId}");
+                return false;
+            }
+        }
+
        
+
+
     }
 }
