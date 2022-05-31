@@ -54,6 +54,20 @@ namespace ProductManager.Logic
             }
         }
 
-        
+        public async Task<bool> Delete(string id)
+        {
+            try
+            {
+                await _databaseService.DeleteItemAsync<User>(id, DataLayerType.User);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error deleting product with id: {id}");
+                return false;
+            }
+        }
+
+       
     }
 }
