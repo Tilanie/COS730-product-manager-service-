@@ -63,7 +63,19 @@ namespace ProductManager.Logic
 
         public async Task<bool> Update(QueueModel queue, string id)
         {
-            return false;
+            try
+            {
+                queue.Tasks = null;
+                queue.Users = null;
+
+                await _databaseService.UpdateItemAsync(id, queue);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error updating product with id: {id}");
+                return false;
+            }
         }
 
         public async Task<bool> Delete(string id)
