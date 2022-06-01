@@ -16,17 +16,26 @@ namespace ProductManager.Logic
 
         public async Task<List<Product>> List()
         {
-            return null;
+            return (await _databaseService.GetItemsAsync<Product>(DataLayerType.Product)).ToList();
         }
 
         public async Task<Product> Get(string id)
         {
-            return null;
+            return await _databaseService.GetItemAsync<Product>(id, DataLayerType.Product);
         }
 
         public async Task<bool> Add(Product product)
         {
-            return false;
+            try
+            {
+                await _databaseService.AddItemAsync(product, DataLayerType.Product);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error adding a new Product");
+                return false;
+            }
         }
 
         public async Task<bool> Update(Product product, string id)
