@@ -46,7 +46,19 @@ namespace ProductManager.Logic
 
         public async Task<bool> Add(QueueModel queue)
         {
-            return false;
+            try
+            {
+                queue.Tasks = null;
+                queue.Users = null;
+
+                await _databaseService.AddItemAsync(queue, DataLayerType.Queue);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error adding a new Product");
+                return false;
+            }
         }
 
         public async Task<bool> Update(QueueModel queue, string id)
