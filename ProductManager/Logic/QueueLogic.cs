@@ -16,27 +16,80 @@ namespace ProductManager.Logic
 
         public async Task<List<QueueModel>> List()
         {
-            return null;
+            return (await _databaseService.GetItemsAsync<QueueModel>(DataLayerType.Queue)).ToList();
         }
 
         public async Task<QueueModel> Get(string id)
         {
-            return null;
+            var queue = await _databaseService.GetItemAsync<QueueModel>(id, DataLayerType.Queue);
+
+            if (queue != null)
+            {
+                var defaultList = new List<string>();
+                var tasks = new List<TaskModel>();
+                foreach (var taskId in queue.TaskIds ?? defaultList.ToArray())
+                {
+                    tasks.Add(await _databaseService.GetItemAsync<TaskModel>(taskId, DataLayerType.Task));
+                }
+                queue.Tasks = tasks.ToArray();
+
+                var users = new List<User>();
+                foreach (var userId in queue.UserIds ?? defaultList.ToArray())
+                {
+                    users.Add(await _databaseService.GetItemAsync<User>(userId, DataLayerType.User));
+                }
+                queue.Users = users.ToArray();
+            }
+
+            return queue;
         }
 
         public async Task<bool> Add(QueueModel queue)
         {
-            return false;
+            try
+            {
+                queue.Tasks = null;
+                queue.Users = null;
+
+                await _databaseService.AddItemAsync(queue, DataLayerType.Queue);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error adding a new Product");
+                return false;
+            }
         }
 
         public async Task<bool> Update(QueueModel queue, string id)
         {
-            return false;
+            try
+            {
+                queue.Tasks = null;
+                queue.Users = null;
+
+                await _databaseService.UpdateItemAsync(id, queue);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error updating product with id: {id}");
+                return false;
+            }
         }
 
         public async Task<bool> Delete(string id)
         {
-            return false;
+            try
+            {
+                await _databaseService.DeleteItemAsync<QueueModel>(id, DataLayerType.Queue);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error deleting product with id: {id}");
+                return false;
+            }
         }
     }
 }

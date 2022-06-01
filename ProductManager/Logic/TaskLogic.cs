@@ -18,37 +18,99 @@ namespace ProductManager.Logic
 
         public async Task<bool> Enqueue(string queueId, string taskId)
         {
-            return false;
+            try
+            {
+                var queue = await _queueLogic.Get(queueId);
+
+                var taskIdList = queue.TaskIds.ToList();
+                taskIdList.Add(taskId);
+
+                queue.TaskIds = taskIdList.Distinct().ToArray();
+
+                return await _queueLogic.Update(queue, queueId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error enqueueing task with id: {taskId}");
+                return false;
+            }
         }
 
         public async Task<bool> Dequeue(string queueId, string taskId)
         {
-            return false;
+            try
+            {
+                var queue = await _queueLogic.Get(queueId);
+
+                var taskIdList = queue.TaskIds.ToList();
+                taskIdList.Remove(taskId);
+
+                queue.TaskIds = taskIdList.Distinct().ToArray();
+
+                return await _queueLogic.Update(queue, queueId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error dequeueing task with id: {taskId}");
+                return false;
+            }
         }
 
         public async Task<bool> Complete(string queueId, string taskId)
         {
-            return false;
+            try
+            {
+                var dequeueResponse = await Dequeue(queueId, taskId);
+                var task = await Get(taskId);
+                task.Status = "Completed";
+
+                var updateResponse = await Update(task, taskId);
+
+                return (dequeueResponse && updateResponse);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error completing task with id: {taskId}");
+                return false;
+            }
         }
 
         public async Task<List<TaskModel>> List()
         {
-            return null;
+            return (await _databaseService.GetItemsAsync<TaskModel>(DataLayerType.Task)).ToList();
         }
 
         public async Task<TaskModel> Get(string id)
         {
-            return null;
+            return await _databaseService.GetItemAsync<TaskModel>(id, DataLayerType.Task);
         }
 
         public async Task<bool> Add(TaskModel task)
         {
-            return false;
+            try
+            {
+                await _databaseService.AddItemAsync(task, DataLayerType.Task);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error adding a new Task");
+                return false;
+            }
         }
 
         private async Task<bool> Update(TaskModel task, string id)
         {
-            return false;
+            try
+            {
+                await _databaseService.UpdateItemAsync(id, task);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error adding a new Task");
+                return false;
+            }
         }
     }
 }
