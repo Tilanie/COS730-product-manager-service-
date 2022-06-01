@@ -16,27 +16,54 @@ namespace ProductManager.Logic
 
         public async Task<List<Product>> List()
         {
-            return null;
+            return (await _databaseService.GetItemsAsync<Product>(DataLayerType.Product)).ToList();
         }
 
         public async Task<Product> Get(string id)
         {
-            return null;
+            return await _databaseService.GetItemAsync<Product>(id, DataLayerType.Product);
         }
 
         public async Task<bool> Add(Product product)
         {
-            return false;
+            try
+            {
+                await _databaseService.AddItemAsync(product, DataLayerType.Product);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error adding a new Product");
+                return false;
+            }
         }
 
         public async Task<bool> Update(Product product, string id)
         {
-            return false;
+            try
+            {
+                await _databaseService.UpdateItemAsync(id, product);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error updating product with id: {id}");
+                return false;
+            }
         }
 
         public async Task<bool> Delete(string id)
         {
-            return false;
+            try
+            {
+                await _databaseService.DeleteItemAsync<Product>(id, DataLayerType.Product);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error deleting product with id: {id}");
+                return false;
+            }
         }
     }
 }
