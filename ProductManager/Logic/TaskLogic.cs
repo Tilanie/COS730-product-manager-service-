@@ -18,12 +18,42 @@ namespace ProductManager.Logic
 
         public async Task<bool> Enqueue(string queueId, string taskId)
         {
-            return false;
+            try
+            {
+                var queue = await _queueLogic.Get(queueId);
+
+                var taskIdList = queue.TaskIds.ToList();
+                taskIdList.Add(taskId);
+
+                queue.TaskIds = taskIdList.Distinct().ToArray();
+
+                return await _queueLogic.Update(queue, queueId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error enqueueing task with id: {taskId}");
+                return false;
+            }
         }
 
         public async Task<bool> Dequeue(string queueId, string taskId)
         {
-            return false;
+            try
+            {
+                var queue = await _queueLogic.Get(queueId);
+
+                var taskIdList = queue.TaskIds.ToList();
+                taskIdList.Remove(taskId);
+
+                queue.TaskIds = taskIdList.Distinct().ToArray();
+
+                return await _queueLogic.Update(queue, queueId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error dequeueing task with id: {taskId}");
+                return false;
+            }
         }
 
         public async Task<bool> Complete(string queueId, string taskId)
