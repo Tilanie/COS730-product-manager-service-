@@ -80,7 +80,16 @@ namespace ProductManager.Logic
 
         public async Task<bool> Delete(string id)
         {
-            return false;
+            try
+            {
+                await _databaseService.DeleteItemAsync<QueueModel>(id, DataLayerType.Queue);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error deleting product with id: {id}");
+                return false;
+            }
         }
     }
 }
