@@ -2,12 +2,8 @@
 
 namespace ProductManager.Models
 {
-    public class Product
+    public class Product: BaseCosmosItem
     {
-
-        [JsonProperty(PropertyName = "id")]
-        public string id { get; set; }
-
         [JsonProperty(PropertyName = "Created")]
         public DateTime Created { get; set; }
 
@@ -41,6 +37,6 @@ namespace ProductManager.Models
         [JsonProperty(PropertyName = "StockLevel")]
         public int? StockLevel { get; set; }
 
-        public DataLayerType DataLayerType => DataLayerType.Product;
+        public override DataLayerType DataLayerType => DataLayerType.Product;
     }
 }

@@ -2,29 +2,26 @@
 
 namespace ProductManager.Models
 {
-    public class TaskModel
+    public class TaskModel: BaseCosmosItem
     {
-        [JsonProperty(PropertyName = "id")]
-        public string id { get; set; }
-
-        [JsonProperty(PropertyName = "warehouse_number")]
+        [JsonProperty(PropertyName = "WarehouseNumber")]
         public string WarehouseNumber { get; set; }
 
-        [JsonProperty(PropertyName = "created_on")]
+        [JsonProperty(PropertyName = "CreatedOn")]
         public DateTime CreatedOn { get; set; }
 
-        [JsonProperty(PropertyName = "created_by")]
+        [JsonProperty(PropertyName = "CreatedBy")]
         public string CreatedBy { get; set; }
 
-        [JsonProperty(PropertyName = "status")]
+        [JsonProperty(PropertyName = "Status")]
         public string Status { get; set; }
 
-        [JsonProperty(PropertyName = "assigned_to")]
+        [JsonProperty(PropertyName = "AssignedTo")]
         public string AssignedTo { get; set; }
 
-        [JsonProperty(PropertyName = "type")]
+        [JsonProperty(PropertyName = "Type")]
         public string Type { get; set; }
 
-        public DataLayerType DataLayerType => DataLayerType.Task;
+        public override DataLayerType DataLayerType => DataLayerType.Task;
     }
 }

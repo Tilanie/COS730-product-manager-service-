@@ -2,12 +2,8 @@
 
 namespace ProductManager.Models
 {
-    public class QueueModel
+    public class QueueModel: BaseCosmosItem
     {
-        [JsonProperty(PropertyName = "id")]
-        public string id { get; set; }
-
-
         [JsonProperty(PropertyName = "Tasks")]
         public TaskModel[]? Tasks { get; set; }
 
@@ -23,6 +19,6 @@ namespace ProductManager.Models
 
         public string[] UserIds { get; set; }
 
-        public DataLayerType DataLayerType => DataLayerType.Queue;
+        public override DataLayerType DataLayerType => DataLayerType.Queue;
     }
 }

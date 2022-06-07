@@ -1,0 +1,6 @@
+C:\Users\tilan\source\repos\COS730-product-manager-service-\Integration.Tests\bin\Debug\net6.0\CoverletSourceRootsMapping
+C:\Users\tilan\source\repos\COS730-product-manager-service-\Integration.Tests\obj\Debug\net6.0\Integration.Tests.csproj.AssemblyReference.cache
+C:\Users\tilan\source\repos\COS730-product-manager-service-\Integration.Tests\obj\Debug\net6.0\Integration.Tests.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\tilan\source\repos\COS730-product-manager-service-\Integration.Tests\obj\Debug\net6.0\Integration.Tests.AssemblyInfoInputs.cache
+C:\Users\tilan\source\repos\COS730-product-manager-service-\Integration.Tests\obj\Debug\net6.0\Integration.Tests.AssemblyInfo.cs
+C:\Users\tilan\source\repos\COS730-product-manager-service-\Integration.Tests\obj\Debug\net6.0\Integration.Tests.csproj.CoreCompileInputs.cache

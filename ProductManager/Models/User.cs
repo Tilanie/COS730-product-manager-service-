@@ -2,32 +2,29 @@
 
 namespace ProductManager.Models
 {
-    public class User
+    public class User: BaseCosmosItem
     {
-        [JsonProperty(PropertyName = "id")]
-        public string id { get; set; }
-
-        [JsonProperty(PropertyName = "id_number")]
+        [JsonProperty(PropertyName = "IdNumber")]
         public string IdNumber { get; set; }
 
-        [JsonProperty(PropertyName = "email")]
+        [JsonProperty(PropertyName = "Email")]
         public string Email { get; set; }
 
-        [JsonProperty(PropertyName = "username")]
+        [JsonProperty(PropertyName = "Username")]
         public string Username { get; set; }
 
-        [JsonProperty(PropertyName = "roles")]
+        [JsonProperty(PropertyName = "Roles")]
         public string[] Roles { get; set; }
 
-        [JsonProperty(PropertyName = "first_name")]
+        [JsonProperty(PropertyName = "FirstName")]
         public string FirstName { get; set; }
 
-        [JsonProperty(PropertyName = "last_name")]
+        [JsonProperty(PropertyName = "LastName")]
         public string LastName { get; set; }
 
-        [JsonProperty(PropertyName = "password")]
+        [JsonProperty(PropertyName = "Password")]
         public string Password { get; set; }
 
-        public DataLayerType DataLayerType => DataLayerType.User;
+        public override DataLayerType DataLayerType => DataLayerType.User;
     }
 }
